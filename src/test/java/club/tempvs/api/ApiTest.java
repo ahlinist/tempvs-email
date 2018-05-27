@@ -1,26 +1,24 @@
-package club.tempvs;
+package club.tempvs.api;
 
 import javax.ws.rs.core.Application;
 
+import club.tempvs.email.api.Api;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
-public class SendEmailTest extends JerseyTest {
+public class ApiTest extends JerseyTest {
 
     @Override
     protected Application configure() {
-        return new ResourceConfig(SendEmail.class);
+        return new ResourceConfig(Api.class);
     }
 
-    /**
-     * Test to see that the message "pong!" is sent in the response.
-     */
     @Test
-    public void testGetIt() {
-        final String responseMsg = target().path("ping").request().get(String.class);
+    public void testGetPong() {
+        final String responseMsg = target().path("api/ping").request().get(String.class);
 
         assertEquals("pong!", responseMsg);
     }
