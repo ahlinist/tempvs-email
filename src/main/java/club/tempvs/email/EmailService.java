@@ -3,7 +3,6 @@ package club.tempvs.email;
 import club.tempvs.email.auth.AuthenticationException;
 import club.tempvs.email.json.Payload;
 import club.tempvs.email.json.PayloadMalformedException;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
