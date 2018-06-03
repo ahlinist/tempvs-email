@@ -1,8 +1,7 @@
 description = 'Email microservice for tempvs'
-group = 'club.tempvs'
+group = 'club.tempvs.email'
 version = '1.0-SNAPSHOT'
 apply plugin: 'java'
-//apply plugin: 'eclipse'
 sourceCompatibility = 1.8
 
 repositories {
@@ -16,7 +15,6 @@ buildscript {
     }
 }
 
-//apply plugin: 'jettyEclipse'
 apply plugin: 'war'
 
 dependencies {
