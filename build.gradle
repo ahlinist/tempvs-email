@@ -1,0 +1,67 @@
+description = 'Email microservice for tempvs'
+group = 'club.tempvs'
+version = '1.0-SNAPSHOT'
+apply plugin: 'java'
+//apply plugin: 'eclipse'
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        // Embedded Jetty 9 Gradle Plugin
+        classpath (group: 'com.sahlbach.gradle', name: 'gradle-jetty-eclipse-plugin', version: '1.9.+')
+    }
+}
+//apply plugin: 'jettyEclipse'
+apply plugin: 'war'
+
+dependencies {
+    implementation 'org.glassfish.jersey:jersey-bom:2.27'
+    //jersey
+    compile 'org.glassfish.jersey.containers:jersey-container-servlet:2.27'
+    compile 'org.glassfish.jersey.inject:jersey-hk2:2.27'
+    //json
+    compile 'org.glassfish.jersey.media:jersey-media-json-jackson:2.27'
+    //jetty
+    compile 'org.eclipse.jetty:jetty-servlet:9.0.6.v20130930'
+    compile 'org.eclipse.jetty:jetty-webapp:9.0.6.v20130930'
+    //email
+    compile 'javax.mail:mail:1.4.7'
+    compile 'javax.activation:activation:1.1.1'
+
+    //heroku
+    compile 'com.github.jsimone:webapp-runner:8.5.27.0'
+
+    //testing
+    testCompile 'org.glassfish.jersey.test-framework.providers:jersey-test-framework-provider-bundle'
+    testCompile 'org.mockito:mockito-core:2.18.3'
+}
+
+task stage() {
+    dependsOn clean, war
+}
+
+tasks.stage.doLast() {
+    delete fileTree(dir: "build/distributions")
+    delete fileTree(dir: "build/assetCompile")
+    delete fileTree(dir: "build/distributions")
+    delete fileTree(dir: "build/libs", exclude: "*.war")
+}
+
+war.mustRunAfter clean
+
+task copyToLib(type: Copy) {
+    into "$buildDir/server"
+    from(configurations.compile) {
+        include "webapp-runner*"
+    }
+}
+
+stage.dependsOn(copyToLib)
