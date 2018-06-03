@@ -20,19 +20,19 @@ buildscript {
 apply plugin: 'war'
 
 dependencies {
-    implementation 'org.glassfish.jersey:jersey-bom:2.27'
+    implementation "org.glassfish.jersey:jersey-bom:$jerseyVersion"
     //jersey
-    compile 'org.glassfish.jersey.containers:jersey-container-servlet:2.27'
-    compile 'org.glassfish.jersey.inject:jersey-hk2:2.27'
+    compile "org.glassfish.jersey.containers:jersey-container-servlet:$jerseyVersion"
+    compile "org.glassfish.jersey.inject:jersey-hk2:$jerseyVersion"
     //json
-    compile 'org.glassfish.jersey.media:jersey-media-json-jackson:2.27'
+    compile "org.glassfish.jersey.media:jersey-media-json-jackson:$jerseyVersion"
     //email
     compile 'javax.mail:mail:1.4.7'
     compile 'javax.activation:activation:1.1.1'
     //heroku
     compile 'com.github.jsimone:webapp-runner:8.5.27.0'
     //testing
-    testCompile 'org.glassfish.jersey.test-framework.providers:jersey-test-framework-provider-bundle'
+    testCompile "org.glassfish.jersey.test-framework.providers:jersey-test-framework-provider-bundle:$jerseyVersion"
     testCompile 'org.mockito:mockito-core:2.18.3'
 }
 
