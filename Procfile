@@ -1,1 +1,1 @@
-web: cd build ; java -jar ../build/server/webapp-runner-*.jar --expand-war --port $PORT libs/*.war
+web: java -cp build/classes:build/libs/* club.tempvs.email.Main
