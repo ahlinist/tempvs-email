@@ -1,5 +1,5 @@
 description = 'Email microservice for tempvs'
-group = 'club.tempvs.email'
+group = 'club.tempvs'
 version = '1.0-SNAPSHOT'
 apply plugin: 'java'
 sourceCompatibility = 1.8
