@@ -1,1 +1,1 @@
-web: java -cp build/classes:build/libs/* club.tempvs.email.Main
+web: java -cp "build/libs/*" club.tempvs.email.Main

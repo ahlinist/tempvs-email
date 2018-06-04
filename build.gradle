@@ -16,6 +16,7 @@ buildscript {
 }
 
 dependencies {
+    //jersey-bom
     implementation "org.glassfish.jersey:jersey-bom:$jerseyVersion"
     //jersey
     compile "org.glassfish.jersey.containers:jersey-container-servlet:$jerseyVersion"
@@ -33,17 +34,16 @@ dependencies {
     testCompile 'org.mockito:mockito-core:2.18.3'
 }
 
-jar {
-    doFirst {
-        from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    }
-    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
+task copyToLib(type: Copy) {
+    into "$buildDir/libs"
+    from configurations.compile
 }
 
 task stage() {
-    dependsOn clean, jar
+    dependsOn clean, copyToLib, jar
 }
 
 tasks.stage.doLast() {
-    delete fileTree(dir: "build/tmp")
+    delete "build/tmp"
+    delete "build/classes"
 }
