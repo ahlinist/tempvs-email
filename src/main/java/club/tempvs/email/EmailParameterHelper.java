@@ -15,11 +15,22 @@ public class EmailParameterHelper {
     private static final String SMTP_USERNAME = System.getenv("SMTP_USERNAME");
     private static final String SMTP_PASSWORD = System.getenv("SMTP_PASSWORD");
 
-    public String getSmtpUserName() {
+    private static String tokenHash = createTokenHash();
+    private static Session emailSession = createEmailSession();
+
+    public static String getSmtpUserName() {
         return SMTP_USERNAME;
     }
 
-    public String getTokenHash() {
+    public static String getTokenHash() {
+        return tokenHash;
+    }
+
+    public static Session getEmailSession() {
+        return emailSession;
+    }
+
+    public static String createTokenHash() {
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("MD5");
             byte[] tokenBytes = TOKEN.getBytes("UTF-8");
@@ -31,25 +42,27 @@ public class EmailParameterHelper {
         }
     }
 
-    public Session getEmailSession() {
-        Session session = Session.getDefaultInstance(getEmailProperties(), new Authenticator() {
+    public static Session createEmailSession() {
+        return Session.getDefaultInstance(getEmailProperties(), new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(SMTP_USERNAME, SMTP_PASSWORD);
             }
         });
-
-        return session;
     }
 
-    private Properties getEmailProperties() {
+    private static Properties getEmailProperties() {
         Properties properties = new Properties();
-        properties.put("mail.smtp.host", SMTP_HOST);
-        properties.put("mail.smtp.socketFactory.port", SMTP_PORT);
-        properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        properties.put("mail.smtp.auth", "true");
-        properties.put("mail.smtp.starttls.enable", "true");
-        properties.put("mail.smtp.port", SMTP_PORT);
+
+        if (SMTP_HOST != null && SMTP_PORT != null) {
+            properties.put("mail.smtp.host", SMTP_HOST);
+            properties.put("mail.smtp.socketFactory.port", SMTP_PORT);
+            properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+            properties.put("mail.smtp.auth", "true");
+            properties.put("mail.smtp.starttls.enable", "true");
+            properties.put("mail.smtp.port", SMTP_PORT);
+        }
+
         return properties;
     }
 }
