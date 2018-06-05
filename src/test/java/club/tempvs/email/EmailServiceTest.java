@@ -1,4 +1,4 @@
-package club.tempvs;
+package club.tempvs.email;
 
 import club.tempvs.email.auth.AuthenticationException;
 import club.tempvs.email.EmailService;

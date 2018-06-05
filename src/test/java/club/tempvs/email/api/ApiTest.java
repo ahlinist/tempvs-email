@@ -1,10 +1,9 @@
-package club.tempvs.api;
+package club.tempvs.email.api;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
 
-import club.tempvs.email.api.Api;
 import club.tempvs.email.json.Payload;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
