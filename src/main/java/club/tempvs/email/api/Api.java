@@ -13,6 +13,8 @@ import javax.ws.rs.core.Response;
 @Path("api")
 public class Api {
 
+    private EmailService emailService = EmailServiceFactory.getInstance();
+
     @HeaderParam("token")
     private String token;
 
@@ -27,8 +29,6 @@ public class Api {
     @Path("send")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response sendEmail(Payload payload) {
-        EmailService emailService = EmailServiceFactory.getInstance();
-
         try {
             emailService.doSend(payload, token);
             return Response.ok().build();
