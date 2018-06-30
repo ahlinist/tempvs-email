@@ -37,7 +37,8 @@ public class Api {
         } catch (PayloadMalformedException e) {
             return Response.status(400, e.getMessage()).build();
         } catch (Exception e) {
-            return Response.serverError().build();
+            e.printStackTrace();
+            return Response.serverError().entity(e.getMessage()).build();
         }
     }
 }
