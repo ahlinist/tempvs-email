@@ -1,6 +1,6 @@
 package club.tempvs.email;
 
-import javax.mail.Session;
+import club.tempvs.email.auth.TokenHelper;
 
 public class EmailServiceFactory {
 
@@ -8,13 +8,9 @@ public class EmailServiceFactory {
 
     public static EmailService getInstance() {
         if (emailService == null) {
-            String tokenHash = EmailParameterHelper.getTokenHash();
-            String userName = EmailParameterHelper.getSmtpUserName();
-            Session emailSession = EmailParameterHelper.getEmailSession();
-            emailService = new EmailService(tokenHash, userName, emailSession);
-            return emailService;
-        } else {
-            return emailService;
+            emailService = new EmailService(new TokenHelper());
         }
+
+        return emailService;
     }
 }

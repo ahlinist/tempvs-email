@@ -5,10 +5,12 @@ import club.tempvs.email.auth.AuthenticationException;
 import club.tempvs.email.EmailService;
 import club.tempvs.email.json.Payload;
 import club.tempvs.email.json.PayloadMalformedException;
+import com.sendgrid.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 
 @Path("api")
 public class Api {

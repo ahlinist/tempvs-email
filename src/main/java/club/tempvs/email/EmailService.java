@@ -1,31 +1,28 @@
 package club.tempvs.email;
 
 import club.tempvs.email.auth.AuthenticationException;
+import club.tempvs.email.auth.TokenHelper;
 import club.tempvs.email.json.Payload;
 import club.tempvs.email.json.PayloadMalformedException;
+import com.sendgrid.*;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EmailService {
 
-    private String tokenHash;
-    private String smtpUsername;
-    private Session emailSession;
+    private static final String FROM = "no_reply@tempvs.club";
+    private static final String CONTENT_TYPE = "text/html";
+    private static final String SENDGRID_API_KEY = System.getenv("SENDGRID_API_KEY");
 
-    public EmailService(String tokenHash, String smtpUsername, Session emailSession) {
-        this.tokenHash = tokenHash;
-        this.smtpUsername = smtpUsername;
-        this.emailSession = emailSession;
+    private String tokenHash;
+
+    public EmailService(TokenHelper tokenHelper) {
+        this.tokenHash = tokenHelper.getTokenHash();
     }
 
-    public void doSend(Payload payload, String token) throws MessagingException {
+    public void doSend(Payload payload, String token) throws IOException {
         authenticate(token);
         validate(payload);
         sendEmail(payload);
@@ -65,12 +62,19 @@ public class EmailService {
         }
     }
 
-    private void sendEmail(Payload payload) throws MessagingException {
-        Message message = new MimeMessage(emailSession);
-        message.setFrom(new InternetAddress(smtpUsername));
-        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(payload.getEmail()));
-        message.setSubject(payload.getSubject());
-        message.setContent(payload.getBody(), "text/html");
-        Transport.send(message);
+    private void sendEmail(Payload payload) throws IOException {
+        Email from = new Email(FROM);
+        String subject = payload.getSubject();
+        Email to = new Email(payload.getEmail());
+        Content content = new Content(CONTENT_TYPE, payload.getBody());
+        Mail mail = new Mail(from, subject, to, content);
+
+        SendGrid sg = new SendGrid(SENDGRID_API_KEY);
+        Request request = new Request();
+
+        request.setMethod(Method.POST);
+        request.setEndpoint("mail/send");
+        request.setBody(mail.build());
+        sg.api(request);
     }
 }
