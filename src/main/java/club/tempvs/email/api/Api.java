@@ -32,28 +32,7 @@ public class Api {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response sendEmail(Payload payload) {
         try {
-
-            Email from = new Email("test@tempvs.club");
-            String subject = "Hello World from the SendGrid Java Library!";
-            Email to = new Email("anton.hlinisty@gmail.com");
-            Content content = new Content("text/plain", "Hello, Email!");
-            Mail mail = new Mail(from, subject, to, content);
-
-            SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));
-            Request request = new Request();
-            try {
-                request.setMethod(Method.POST);
-                request.setEndpoint("mail/send");
-                request.setBody(mail.build());
-                com.sendgrid.Response response = sg.api(request);
-                System.out.println(response.getStatusCode());
-                System.out.println(response.getBody());
-                System.out.println(response.getHeaders());
-            } catch (IOException ex) {
-                throw ex;
-            }
-
-            //emailService.doSend(payload, token);
+            emailService.doSend(payload, token);
             return Response.ok().build();
         } catch (AuthenticationException e) {
             return Response.status(401).build();

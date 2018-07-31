@@ -2,6 +2,7 @@ package club.tempvs.email;
 
 import club.tempvs.email.auth.AuthenticationException;
 import club.tempvs.email.EmailService;
+import club.tempvs.email.auth.TokenHelper;
 import club.tempvs.email.json.Payload;
 import club.tempvs.email.json.PayloadMalformedException;
 import org.junit.Before;
@@ -24,11 +25,13 @@ public class EmailServiceTest {
 
     @Mock
     private Payload payload;
+    @Mock
+    private TokenHelper tokenHelper;
 
     @Before
     public void setup() {
-        //TODO: mock Session properly (final class) instead of using null
-        emailService = new EmailService(TOKEN_HASH, SMTP_USERNAME, null);
+        when(tokenHelper.getTokenHash()).thenReturn(TOKEN_HASH);
+        emailService = new EmailService(tokenHelper);
     }
 
     @Test(expected = AuthenticationException.class)
