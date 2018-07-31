@@ -13,6 +13,7 @@ import java.util.List;
 public class EmailService {
 
     private static final String FROM = "no_reply@tempvs.club";
+    private static final String CONTENT_TYPE = "text/html";
     private static final String SENDGRID_API_KEY = System.getenv("SENDGRID_API_KEY");
 
     private String tokenHash;
@@ -65,7 +66,7 @@ public class EmailService {
         Email from = new Email(FROM);
         String subject = payload.getSubject();
         Email to = new Email(payload.getEmail());
-        Content content = new Content("text/plain", payload.getBody());
+        Content content = new Content(CONTENT_TYPE, payload.getBody());
         Mail mail = new Mail(from, subject, to, content);
 
         SendGrid sg = new SendGrid(SENDGRID_API_KEY);
