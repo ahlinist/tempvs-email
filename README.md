@@ -1,9 +1,9 @@
 # tempvs-email
 [![Circle CI](https://circleci.com/gh/ahlinist/tempvs-email/tree/master.svg?&style=shield)](https://circleci.com/gh/ahlinist/tempvs-email/tree/master)
 
-An email microservice for tempvs (see: https://github.com/ahlinist/tempvs)
+An email microservice for tempvs (see: https://github.com/ahlinist/tempvs). Based on tempvs-rest client (see: https://github.com/ahlinist/tempvs-rest).
  
-### Configuration
+## Configuration
 SendGrid lib is used for email deliveries. The following env variables need to be set correctly:
  * SENDGRID_API_KEY
  * PORT (8080 - default)
