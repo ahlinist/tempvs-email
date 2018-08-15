@@ -1,18 +1,14 @@
-description = 'Email microservice for tempvs'
-group = 'club.tempvs'
-version = '1.0-SNAPSHOT'
-apply plugin: 'java'
+plugins {
+    id 'java'
+}
+
+group 'club.tempvs'
+version '1.0-SNAPSHOT'
+
 sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
-}
-
-
-buildscript {
-    repositories {
-        jcenter()
-    }
 }
 
 dependencies {
