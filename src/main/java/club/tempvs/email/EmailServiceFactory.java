@@ -1,6 +1,6 @@
 package club.tempvs.email;
 
-import club.tempvs.email.auth.TokenHelper;
+import club.tempvs.rest.auth.TokenHelper;
 
 public class EmailServiceFactory {
 

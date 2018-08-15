@@ -1,19 +1,15 @@
-package club.tempvs.email.api;
+package club.tempvs.email;
 
-import club.tempvs.email.EmailServiceFactory;
-import club.tempvs.email.auth.AuthenticationException;
-import club.tempvs.email.EmailService;
-import club.tempvs.email.json.Payload;
-import club.tempvs.email.json.PayloadMalformedException;
-import com.sendgrid.*;
+import club.tempvs.email.model.EmailPayload;
+import club.tempvs.rest.auth.AuthenticationException;
+import club.tempvs.rest.model.PayloadMalformedException;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
 
 @Path("api")
-public class Api {
+public class EmailApi {
 
     private EmailService emailService = EmailServiceFactory.getInstance();
 
@@ -30,7 +26,7 @@ public class Api {
     @POST
     @Path("send")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response sendEmail(Payload payload) {
+    public Response sendEmail(EmailPayload payload) {
         try {
             emailService.doSend(payload, token);
             return Response.ok().build();

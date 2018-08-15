@@ -1,10 +1,10 @@
-package club.tempvs.email.api;
+package club.tempvs.email;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
 
-import club.tempvs.email.json.Payload;
+import club.tempvs.email.model.EmailPayload;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 
@@ -13,21 +13,14 @@ import org.mockito.Mock;
 
 import static org.junit.Assert.*;
 
-public class ApiTest extends JerseyTest {
+public class EmailApiTest extends JerseyTest {
 
     @Mock
-    private Payload payload;
+    private EmailPayload payload;
 
     @Override
     protected Application configure() {
-        return new ResourceConfig(Api.class);
-    }
-
-    @Test
-    public void testPing() {
-        String responseMsg = target().path("api/ping").request().get(String.class);
-
-        assertEquals("pong!", responseMsg);
+        return new ResourceConfig(EmailApi.class);
     }
 
     @Test

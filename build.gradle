@@ -16,18 +16,12 @@ buildscript {
 }
 
 dependencies {
-    //jersey-bom
-    implementation "org.glassfish.jersey:jersey-bom:$jerseyVersion"
-    //jersey
-    compile "org.glassfish.jersey.containers:jersey-container-servlet:$jerseyVersion"
-    compile "org.glassfish.jersey.inject:jersey-hk2:$jerseyVersion"
-    //json
-    compile "org.glassfish.jersey.media:jersey-media-json-jackson:$jerseyVersion"
+    //rest
+    compile 'club.tempvs:rest:1.4'
+    //email validation
+    compile 'commons-validator:commons-validator:1.6'
     //sendgrid
     compile 'com.sendgrid:sendgrid-java:4.2.1'
-    //jetty
-    compile "org.eclipse.jetty:jetty-servlet:$jettyVersion"
-    compile "org.eclipse.jetty:jetty-webapp:$jettyVersion"
     //testing
     testCompile "org.glassfish.jersey.test-framework.providers:jersey-test-framework-provider-bundle:$jerseyVersion"
     testCompile 'org.mockito:mockito-core:2.18.3'

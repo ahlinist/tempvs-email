@@ -1,10 +1,9 @@
 package club.tempvs.email;
 
-import club.tempvs.email.auth.AuthenticationException;
-import club.tempvs.email.EmailService;
-import club.tempvs.email.auth.TokenHelper;
-import club.tempvs.email.json.Payload;
-import club.tempvs.email.json.PayloadMalformedException;
+import club.tempvs.email.model.EmailPayload;
+import club.tempvs.rest.auth.AuthenticationException;
+import club.tempvs.rest.auth.TokenHelper;
+import club.tempvs.rest.model.PayloadMalformedException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +23,7 @@ public class EmailServiceTest {
     private EmailService emailService;
 
     @Mock
-    private Payload payload;
+    private EmailPayload payload;
     @Mock
     private TokenHelper tokenHelper;
 
@@ -40,48 +39,17 @@ public class EmailServiceTest {
     }
 
     @Test(expected = AuthenticationException.class)
-    public void testDoSendNonAuthenticated() throws Exception {
-        emailService.doSend(payload, "incorrectToken");
+    public void testDoSendWithInvalidToken() throws Exception {
+        emailService.doSend(payload, "invalidToken");
     }
 
     @Test(expected = PayloadMalformedException.class)
-    public void testDoSendWithoutPayload() throws Exception {
-        emailService.doSend(null, TOKEN_HASH);
-    }
-
-    @Test(expected = PayloadMalformedException.class)
-    public void testDoSendWithoutEmail() throws Exception {
-        when(payload.getBody()).thenReturn(EMAIL_BODY);
-        when(payload.getSubject()).thenReturn(EMAIL_SUBJECT);
+    public void testDoSendWithMalformedPayload() throws Exception {
+        doThrow(new PayloadMalformedException("Error message")).when(payload).validate();
 
         emailService.doSend(payload, TOKEN_HASH);
 
-        verify(payload).getEmail();
-        verifyNoMoreInteractions(payload);
-    }
-
-    @Test(expected = PayloadMalformedException.class)
-    public void testDoSendWithoutSubject() throws Exception {
-        when(payload.getEmail()).thenReturn(SMTP_USERNAME);
-        when(payload.getBody()).thenReturn(EMAIL_BODY);
-
-        emailService.doSend(payload, TOKEN_HASH);
-
-        verify(payload).getEmail();
-        verify(payload).getSubject();
-        verifyNoMoreInteractions(payload);
-    }
-
-    @Test(expected = PayloadMalformedException.class)
-    public void testDoSendWithoutBody() throws Exception {
-        when(payload.getEmail()).thenReturn(SMTP_USERNAME);
-        when(payload.getSubject()).thenReturn(EMAIL_SUBJECT);
-
-        emailService.doSend(payload, TOKEN_HASH);
-
-        verify(payload).getEmail();
-        verify(payload).getSubject();
-        verify(payload).getBody();
+        verify(payload).validate();
         verifyNoMoreInteractions(payload);
     }
 }

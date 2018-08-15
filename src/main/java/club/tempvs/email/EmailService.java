@@ -1,14 +1,11 @@
 package club.tempvs.email;
 
-import club.tempvs.email.auth.AuthenticationException;
-import club.tempvs.email.auth.TokenHelper;
-import club.tempvs.email.json.Payload;
-import club.tempvs.email.json.PayloadMalformedException;
+import club.tempvs.email.model.EmailPayload;
+import club.tempvs.rest.auth.AuthenticationException;
+import club.tempvs.rest.auth.TokenHelper;
 import com.sendgrid.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class EmailService {
 
@@ -22,9 +19,9 @@ public class EmailService {
         this.tokenHash = tokenHelper.getTokenHash();
     }
 
-    public void doSend(Payload payload, String token) throws IOException {
+    public void doSend(EmailPayload payload, String token) throws IOException {
         authenticate(token);
-        validate(payload);
+        payload.validate();
         sendEmail(payload);
     }
 
@@ -34,35 +31,7 @@ public class EmailService {
         }
     }
 
-    private void validate(Payload payload) {
-        if (payload == null) {
-            throw new PayloadMalformedException("Payload is empty");
-        }
-
-        Boolean payloadValid = Boolean.TRUE;
-        List<String> errors = new ArrayList<>();
-
-        if (payload.getEmail() == null) {
-            payloadValid = Boolean.FALSE;
-            errors.add("Email address is empty");
-        }
-
-        if (payload.getSubject() == null) {
-            payloadValid = Boolean.FALSE;
-            errors.add("Subject is empty");
-        }
-
-        if (payload.getBody() == null) {
-            payloadValid = Boolean.FALSE;
-            errors.add("Message is empty");
-        }
-
-        if (!payloadValid) {
-            throw new PayloadMalformedException(String.join(", ", errors));
-        }
-    }
-
-    private void sendEmail(Payload payload) throws IOException {
+    private void sendEmail(EmailPayload payload) throws IOException {
         Email from = new Email(FROM);
         String subject = payload.getSubject();
         Email to = new Email(payload.getEmail());
