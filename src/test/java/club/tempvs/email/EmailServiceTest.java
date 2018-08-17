@@ -15,10 +15,7 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class EmailServiceTest {
 
-    private final static String EMAIL_BODY = "body";
     private final static String TOKEN_HASH = "tokenHash";
-    private final static String EMAIL_SUBJECT = "subject";
-    private final static String SMTP_USERNAME = "user@test.com";
 
     private EmailService emailService;
 
@@ -29,18 +26,26 @@ public class EmailServiceTest {
 
     @Before
     public void setup() {
-        when(tokenHelper.getTokenHash()).thenReturn(TOKEN_HASH);
         emailService = new EmailService(tokenHelper);
     }
 
     @Test(expected = AuthenticationException.class)
     public void testDoSendWithoutToken() throws Exception {
+        doThrow(new AuthenticationException()).when(tokenHelper).authenticate(null);
+
         emailService.doSend(payload, null);
+
+        verify(tokenHelper).authenticate(null);
+        verifyNoMoreInteractions(tokenHelper);
     }
 
     @Test(expected = AuthenticationException.class)
     public void testDoSendWithInvalidToken() throws Exception {
+        doThrow(new AuthenticationException()).when(tokenHelper).authenticate("invalidToken");
         emailService.doSend(payload, "invalidToken");
+
+        verify(tokenHelper).authenticate("invalidToken");
+        verifyNoMoreInteractions(tokenHelper);
     }
 
     @Test(expected = PayloadMalformedException.class)
@@ -49,7 +54,9 @@ public class EmailServiceTest {
 
         emailService.doSend(payload, TOKEN_HASH);
 
+        verify(tokenHelper).authenticate(TOKEN_HASH);
         verify(payload).validate();
         verifyNoMoreInteractions(payload);
+        verifyNoMoreInteractions(tokenHelper);
     }
 }

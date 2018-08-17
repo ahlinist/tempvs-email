@@ -13,7 +13,7 @@ repositories {
 
 dependencies {
     //rest
-    compile 'club.tempvs:rest:1.4'
+    compile 'club.tempvs:rest:1.6'
     //email validation
     compile 'commons-validator:commons-validator:1.6'
     //sendgrid

@@ -13,22 +13,16 @@ public class EmailService {
     private static final String CONTENT_TYPE = "text/html";
     private static final String SENDGRID_API_KEY = System.getenv("SENDGRID_API_KEY");
 
-    private String tokenHash;
+    private TokenHelper tokenHelper;
 
     public EmailService(TokenHelper tokenHelper) {
-        this.tokenHash = tokenHelper.getTokenHash();
+        this.tokenHelper = tokenHelper;
     }
 
     public void doSend(EmailPayload payload, String token) throws IOException {
-        authenticate(token);
+        tokenHelper.authenticate(token);
         payload.validate();
         sendEmail(payload);
-    }
-
-    private void authenticate(String receivedToken) {
-        if (receivedToken == null || !receivedToken.equals(tokenHash)) {
-            throw new AuthenticationException();
-        }
     }
 
     private void sendEmail(EmailPayload payload) throws IOException {
