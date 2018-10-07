@@ -13,7 +13,7 @@ public class EmailApi {
 
     private EmailService emailService = EmailServiceFactory.getInstance();
 
-    @HeaderParam("token")
+    @HeaderParam("Authorization")
     private String token;
 
     @GET
