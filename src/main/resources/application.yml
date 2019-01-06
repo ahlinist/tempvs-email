@@ -1,0 +1,6 @@
+logging:
+  level:
+    org.springframework.web: WARN
+spring:
+  sendgrid:
+    api-key: ${SENDGRID_API_KEY}
