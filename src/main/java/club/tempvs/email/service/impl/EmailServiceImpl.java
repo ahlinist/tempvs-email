@@ -2,6 +2,8 @@ package club.tempvs.email.service.impl;
 
 import club.tempvs.email.service.EmailService;
 import club.tempvs.email.util.ObjectFactory;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.sendgrid.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,9 @@ public class EmailServiceImpl implements EmailService {
     private final SendGrid sendGrid;
     private final ObjectFactory objectFactory;
 
+    @HystrixCommand(commandProperties = {
+            @HystrixProperty(name = "execution.isolation.strategy", value = "SEMAPHORE")
+    })
     public void send(String email, String subject, String body) throws IOException {
         if (email == null || email.isEmpty() || subject == null || subject.isEmpty() || body == null || body.isEmpty()) {
             throw new IllegalArgumentException("One of the following parameters was empty: email-to ("
