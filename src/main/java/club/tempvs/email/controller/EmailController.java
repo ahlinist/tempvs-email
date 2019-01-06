@@ -4,6 +4,7 @@ import club.tempvs.email.api.UnauthorizedException;
 import club.tempvs.email.model.EmailPayload;
 import club.tempvs.email.service.EmailService;
 import club.tempvs.email.util.AuthHelper;
+import com.netflix.hystrix.exception.HystrixRuntimeException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +47,12 @@ public class EmailController {
     @ExceptionHandler(UnauthorizedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public String throwUnauthorizedException(UnauthorizedException e) {
+        return processException(e);
+    }
+
+    @ExceptionHandler(HystrixRuntimeException.class)
+    @ResponseStatus(HttpStatus.REQUEST_TIMEOUT)
+    public String throwTimeOutException(HystrixRuntimeException e) {
         return processException(e);
     }
 
