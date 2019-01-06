@@ -19,6 +19,11 @@ public class EmailServiceImpl implements EmailService {
     private final ObjectFactory objectFactory;
 
     public void send(String email, String subject, String body) throws IOException {
+        if (email == null || email.isEmpty() || subject == null || subject.isEmpty() || body == null || body.isEmpty()) {
+            throw new IllegalArgumentException("One of the following parameters was empty: email-to ("
+                    + email + "), subject (" +  subject + "), body: (" + body + ").");
+        }
+
         Email from = objectFactory.getInstance(Email.class, EMAIL_FROM);
         Email to = objectFactory.getInstance(Email.class, email);
         Content content = objectFactory.getInstance(Content.class, TEXT_CONTENT_TYPE, body);

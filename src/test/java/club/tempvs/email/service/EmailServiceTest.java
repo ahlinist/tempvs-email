@@ -75,4 +75,59 @@ public class EmailServiceTest {
         verify(sendGrid).api(request);
         verifyNoMoreInteractions(objectFactory, from, to, content, mail, sendGrid, request);
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSendForNullEmailTo() throws IOException {
+        String email = null;
+        String subject = "subject";
+        String body = "<p>body</p>";
+
+        emailService.send(email, subject, body);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSendForNullSubject() throws IOException {
+        String email = "test@email.com";
+        String subject = null;
+        String body = "<p>body</p>";
+
+        emailService.send(email, subject, body);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSendForNullBody() throws IOException {
+        String email = "test@email.com";
+        String subject = "subject";
+        String body = null;
+
+        emailService.send(email, subject, body);
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSendForEmptyEmailTo() throws IOException {
+        String email = "";
+        String subject = "subject";
+        String body = "<p>body</p>";
+
+        emailService.send(email, subject, body);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSendForEmptySubject() throws IOException {
+        String email = "test@email.com";
+        String subject = "";
+        String body = "<p>body</p>";
+
+        emailService.send(email, subject, body);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSendForEmptyBody() throws IOException {
+        String email = "test@email.com";
+        String subject = "subject";
+        String body = "";
+
+        emailService.send(email, subject, body);
+    }
 }
