@@ -12,10 +12,10 @@ eureka:
     hostname: ${DOMAIN_NAME}
     secure-port-enabled: true
     non-secure-port-enabled: false
-    statusPageUrl: https://${eureka.instance.hostName}/info
-    healthCheckUrl: https://${eureka.instance.hostName}/health
-    homePageUrl: https://${eureka.instance.hostName}/
-  password: ${EUREKA_PASSWORD:password}
+    statusPageUrl: https://${eureka.instance.hostname}/info
+    healthCheckUrl: https://${eureka.instance.hostname}/health
+    homePageUrl: https://${eureka.instance.hostname}/
+  password: ${EUREKA_PASSWORD}
 security:
   user:
     password: ${eureka.password}
@@ -27,4 +27,5 @@ eureka:
     hostname: localhost
     non-secure-port-enabled: true
     nonSecurePort: 8081
-    homePageUrl: http://${eureka.instance.hostName}/
+    homePageUrl: http://${eureka.instance.hostname}/
+    password: password
