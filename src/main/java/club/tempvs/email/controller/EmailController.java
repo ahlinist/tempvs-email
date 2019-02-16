@@ -3,7 +3,6 @@ package club.tempvs.email.controller;
 import club.tempvs.email.api.UnauthorizedException;
 import club.tempvs.email.model.EmailPayload;
 import club.tempvs.email.service.EmailService;
-import club.tempvs.email.util.AuthHelper;
 import com.netflix.hystrix.exception.HystrixRuntimeException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -22,21 +21,11 @@ import java.io.StringWriter;
 public class EmailController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailController.class);
-    private static final String AUTHORIZATION_HEADER = "Authorization";
 
-    private final AuthHelper authHelper;
     private final EmailService emailService;
 
-    @GetMapping("/ping")
-    public String ping() {
-        return "pong!";
-    }
-
     @PostMapping("/send")
-    public ResponseEntity send(
-            @RequestHeader(value = AUTHORIZATION_HEADER, required = false) String token,
-            @RequestBody EmailPayload emailPayload) throws IOException {
-        authHelper.authenticate(token);
+    public ResponseEntity send(@RequestBody EmailPayload emailPayload) throws IOException {
         String email = emailPayload.getEmail();
         String subject = emailPayload.getSubject();
         String body = emailPayload.getBody();

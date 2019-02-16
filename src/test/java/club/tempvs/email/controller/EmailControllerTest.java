@@ -2,7 +2,6 @@ package club.tempvs.email.controller;
 
 import club.tempvs.email.model.EmailPayload;
 import club.tempvs.email.service.EmailService;
-import club.tempvs.email.util.AuthHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,24 +23,13 @@ public class EmailControllerTest {
     private EmailController emailController;
 
     @Mock
-    private AuthHelper authHelper;
-
-    @Mock
     private EmailService emailService;
-
     @Mock
     private EmailPayload emailPayload;
 
     @Before
     public void setup() {
-        emailController = new EmailController(authHelper, emailService);
-    }
-
-    @Test
-    public void testPing() {
-        String result = emailController.ping();
-
-        assertEquals("ping() method invocation returns 'pong!' String", "pong!", result);
+        emailController = new EmailController(emailService);
     }
 
     @Test
@@ -54,9 +42,8 @@ public class EmailControllerTest {
         when(emailPayload.getSubject()).thenReturn(subject);
         when(emailPayload.getBody()).thenReturn(body);
 
-        ResponseEntity result = emailController.send(TOKEN, emailPayload);
+        ResponseEntity result = emailController.send(emailPayload);
 
-        verify(authHelper).authenticate(TOKEN);
         verify(emailPayload).getEmail();
         verify(emailPayload).getSubject();
         verify(emailPayload).getBody();
