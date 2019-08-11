@@ -38,12 +38,11 @@ dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-hystrix'
 	compile 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 	//lombok
-	compileOnly 'org.projectlombok:lombok:1.18.4'
-	apt 'org.projectlombok:lombok:1.18.4'
+	annotationProcessor 'org.projectlombok:lombok'
+	compileOnly 'org.projectlombok:lombok'
 	//sendgrid
 	implementation 'com.sendgrid:sendgrid-java:4.2.1'
 	//testing
-	//testImplementation 'org.mockito:mockito-core:2.18.3'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
