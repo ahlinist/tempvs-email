@@ -6,30 +6,32 @@ logging:
 spring:
   sendgrid:
     api-key: ${SENDGRID_API_KEY}
+authorization:
+  token: ${TOKEN}
 eureka:
   client:
     serviceUrl:
       defaultZone: ${EUREKA_URL:http://user:password@localhost:8084}/eureka/
   instance:
-    hostname: ${DOMAIN_NAME}
-    secure-port-enabled: true
-    non-secure-port-enabled: false
+    hostname: ${DOMAIN_NAME:localhost}
     statusPageUrl: https://${eureka.instance.hostname}/info
     healthCheckUrl: https://${eureka.instance.hostname}/health
     homePageUrl: https://${eureka.instance.hostname}/
-  password: ${EUREKA_PASSWORD}
+    secure-port-enabled: false
+    non-secure-port-enabled: true
+    secure-port: 443
+    non-secure-port: 80
+  password: ${EUREKA_PASSWORD:password}
+ribbon:
+  eager-load:
+    enabled: true
 security:
   user:
     password: ${eureka.password}
-authorization:
-  token: ${TOKEN}
 ---
 spring:
   profiles: local
 eureka:
   instance:
-    hostname: localhost:8081
-    non-secure-port-enabled: true
-    nonSecurePort: 8081
-    homePageUrl: http://${eureka.instance.hostname}/
-    password: password
+    homePageUrl: http://${eureka.instance.hostname}:8081/
+    non-secure-port: 8081
