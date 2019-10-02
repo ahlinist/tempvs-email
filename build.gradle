@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '2.1.7.RELEASE'
+		springBootVersion = '2.1.8.RELEASE'
 	}
 	repositories {
 		mavenCentral()
@@ -29,24 +29,47 @@ repositories {
 
 dependencyManagement {
 	imports {
-		mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Greenwich.SR2'
+		mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Greenwich.SR3'
 	}
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-hystrix'
-	compile 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+	implementation 'org.springframework.cloud:spring-cloud-starter-stream-rabbit'
+	implementation 'org.springframework.cloud:spring-cloud-stream-binder-rabbit'
 	//lombok
 	annotationProcessor 'org.projectlombok:lombok'
 	compileOnly 'org.projectlombok:lombok'
 	//sendgrid
 	implementation 'com.sendgrid:sendgrid-java:4.2.1'
 	//testing
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation  'org.springframework.cloud:spring-cloud-stream-test-support'
 }
 
 bootJar {
 	archiveBaseName = 'tempvs-email'
 	archiveVersion = ''
+}
+
+sourceSets {
+	integrationTest {
+		java {
+			compileClasspath += main.output + test.output
+			runtimeClasspath += main.output + test.output
+			srcDir file('src/integration-test/java')
+		}
+
+		resources.srcDir file('src/integration-test/resources')
+	}
+}
+
+task integrationTest(type: Test) {
+	testClassesDirs = sourceSets.integrationTest.output.classesDirs
+	classpath = sourceSets.integrationTest.runtimeClasspath
+}
+
+configurations {
+	integrationTestImplementation.extendsFrom testImplementation
+	integrationTestRuntime.extendsFrom testRuntime
 }

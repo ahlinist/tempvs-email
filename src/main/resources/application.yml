@@ -6,8 +6,19 @@ logging:
 spring:
   sendgrid:
     api-key: ${SENDGRID_API_KEY}
-authorization:
-  token: ${TOKEN}
+  cloud:
+    stream:
+      binders:
+        heroku_rabbit:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: ${AMQP_HOST}
+                port: 5672
+                username: ${AMQP_USER}
+                password: ${AMQP_PASSWORD}
+                virtual-host: ${AMQP_USER}
 eureka:
   client:
     serviceUrl:
