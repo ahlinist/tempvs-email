@@ -19,30 +19,3 @@ spring:
                 username: ${AMQP_USER}
                 password: ${AMQP_PASSWORD}
                 virtual-host: ${AMQP_USER}
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: ${EUREKA_URL:http://user:password@localhost:8084}/eureka/
-  instance:
-    hostname: ${DOMAIN_NAME:localhost}
-    statusPageUrl: https://${eureka.instance.hostname}/info
-    healthCheckUrl: https://${eureka.instance.hostname}/health
-    homePageUrl: https://${eureka.instance.hostname}/
-    secure-port-enabled: false
-    non-secure-port-enabled: true
-    secure-port: 443
-    non-secure-port: 80
-  password: ${EUREKA_PASSWORD:password}
-ribbon:
-  eager-load:
-    enabled: true
-security:
-  user:
-    password: ${eureka.password}
----
-spring:
-  profiles: local
-eureka:
-  instance:
-    homePageUrl: http://${eureka.instance.hostname}:8081/
-    non-secure-port: 8081
